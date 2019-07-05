@@ -1,2 +1,2 @@
 rdflib==4.2.2
-orbis>=2.0
+orbis>=2.1

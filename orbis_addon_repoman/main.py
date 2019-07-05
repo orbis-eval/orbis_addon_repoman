@@ -5,7 +5,7 @@ import os
 import time
 import importlib
 
-from orbis_addon_repoman import app
+from orbis import app
 from orbis_addon_repoman import config
 from orbis.libs.decorators import clear_screen
 from orbis.core.addon import AddonBaseClass
