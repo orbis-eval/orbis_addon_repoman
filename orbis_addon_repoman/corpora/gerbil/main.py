@@ -1,4 +1,3 @@
-#!/usr/bin/env python3.6
 # -*- coding: utf-8 -*-
 
 from urllib.request import urlopen, urlretrieve
@@ -9,7 +8,7 @@ import re
 import shutil
 
 from orbis_addon_repoman import app
-from orbis.config import paths
+from orbis_eval.config import paths
 from orbis_addon_repoman.format.nif import convert
 
 

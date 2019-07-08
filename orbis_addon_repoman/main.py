@@ -1,17 +1,16 @@
-#!/usr/bin/env python3.6
 # -*- coding: utf-8 -*-
 
 import os
 import time
 import importlib
 
-from orbis import app
+from orbis_eval import app
 from orbis_addon_repoman import config
-from orbis.libs.decorators import clear_screen
-from orbis.core.addon import AddonBaseClass
+from orbis_eval.libs.decorators import clear_screen
+from orbis_eval.core.addon import AddonBaseClass
 
 
-class Repoman(AddonBaseClass):
+class Main(AddonBaseClass):
     """docstring for Repoman"""
 
     def __init__(self):

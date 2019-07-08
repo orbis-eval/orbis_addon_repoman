@@ -1,4 +1,3 @@
-#!/usr/bin/env python3.6
 # -*- coding: utf-8 -*-
 
 from urllib.request import urlretrieve
@@ -8,9 +7,9 @@ import pathlib
 import shutil
 
 from orbis_addon_repoman import app
-from orbis.config import paths
-from orbis.libs.decorators import clear_screen
-from orbis.libs.config import load_config
+from orbis_eval.config import paths
+from orbis_eval.libs.decorators import clear_screen
+from orbis_eval.libs.config import load_config
 
 
 class Corpus(object):

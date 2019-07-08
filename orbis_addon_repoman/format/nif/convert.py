@@ -1,4 +1,3 @@
-#!/usr/bin/env python3.6
 # -*- coding: utf-8 -*-
 
 from rdflib import Namespace, Graph
@@ -6,7 +5,7 @@ import os
 import pathlib
 
 from orbis_addon_repoman import app
-import orbis_plugin_aggregation_dbpedia_entity_types as dbpedia_entity_types
+from orbis_plugin_aggregation_dbpedia_entity_types import Main as dbpedia_entity_types
 
 
 class Convert(object):
