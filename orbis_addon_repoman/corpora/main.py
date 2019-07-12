@@ -6,17 +6,17 @@ import os
 import pathlib
 import shutil
 
-from orbis_addon_repoman import app
+from orbis_eval import app
 from orbis_eval.config import paths
 from orbis_eval.libs.decorators import clear_screen
 from orbis_eval.libs.config import load_config
 
 
-class Corpus(object):
-    """docstring for Corpus"""
+class Main(object):
+    """docstring for Main"""
 
     def __init__(self, addon_path):
-        super(Corpus, self).__init__()
+        super(Main, self).__init__()
         self.addon_path = addon_path
         self.config = load_config([f"{self.addon_path}/sources.yaml"])[0]
         self.available_corpora = {}

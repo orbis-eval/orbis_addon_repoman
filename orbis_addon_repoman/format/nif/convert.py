@@ -4,7 +4,7 @@ from rdflib import Namespace, Graph
 import os
 import pathlib
 
-from orbis_addon_repoman import app
+from orbis_eval import app
 from orbis_plugin_aggregation_dbpedia_entity_types import Main as dbpedia_entity_types
 
 

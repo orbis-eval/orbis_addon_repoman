@@ -7,7 +7,7 @@ import pathlib
 import re
 import shutil
 
-from orbis_addon_repoman import app
+from orbis_eval import app
 from orbis_eval.config import paths
 from orbis_addon_repoman.format.nif import convert
 
