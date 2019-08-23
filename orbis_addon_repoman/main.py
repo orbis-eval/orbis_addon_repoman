@@ -4,10 +4,9 @@ import os
 import time
 import importlib
 
-from orbis_eval import app
 from orbis_addon_repoman import config
 from orbis_eval.libs.decorators import clear_screen
-from orbis_eval.core.addon import AddonBaseClass
+from orbis_eval.core.base import AddonBaseClass
 
 
 class Main(AddonBaseClass):
