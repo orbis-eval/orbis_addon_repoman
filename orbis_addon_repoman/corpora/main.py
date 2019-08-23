@@ -47,14 +47,14 @@ class Main(object):
 
         print(f'[{counter}]:\t Load local corpus file')
         self.choice[counter] = ("local", None, None, "local")
+
         self.selection = int(input("Selection: "))
 
     def down_and_load(self):
 
-        # print(self.choice)
         action = "load" if self.choice[self.selection][0] == "local" else "download"
 
-        if action == "local":
+        if action == "load":
             file_destination = self.load()
         else:
             file_destination, corpus_dir, file_name = self.download()
