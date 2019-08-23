@@ -46,7 +46,7 @@ class Main(object):
                 counter += 1
 
         print(f'[{counter}]:\t Load local corpus file')
-        self.choice[counter] = ("local", None, None, "local")
+        self.choice[counter] = ("local", None, "nif", "local")
 
         self.selection = int(input("Selection: "))
 
@@ -55,7 +55,7 @@ class Main(object):
         action = "load" if self.choice[self.selection][0] == "local" else "download"
 
         if action == "load":
-            file_destination = self.load()
+            file_destination, corpus_dir, file_name = self.load()
         else:
             file_destination, corpus_dir, file_name = self.download()
 
@@ -110,6 +110,7 @@ class Main(object):
         file_path = input("Please enter path to corpus file: ")
         file_name = ".".join(file_path.split("/")[-1].split(".")[:-1])
 
+        print(f"file_name: {file_name}")
         file_name_ok = input(f'Is the corpus called "{file_name}"? (Y/n) ')
         while file_name_ok not in ["Y", "y", ""]:
             file_name = input("Please enter corpus name: ")
@@ -124,9 +125,12 @@ class Main(object):
             file_destination = os.path.join(corpus_dir, "source")
             pathlib.Path(file_destination).mkdir(parents=True, exist_ok=True)
             file_destination = os.path.join(file_destination, f"{file_name}.{file_filetype}")
+            print(f"file_path: {file_path}")
+            print(f"file_destination: {file_destination}")
+
             shutil.copy(str(file_path), str(file_destination))
 
-            return file_destination
+            return file_destination, corpus_dir, file_name
         return False
 
     def run(self):

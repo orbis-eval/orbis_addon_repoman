@@ -39,6 +39,14 @@ class Convert(object):
         with open(os.path.join(folder, file_name), "w") as open_file:
 
             for subject, predicate, object_ in g.triples((None, self.nif_namespace.anchorOf, None)):
+                """
+                print(f"\n")
+                print(f"subject: {subject}")
+                print(f"predicate: {predicate}")
+                print(f"object: {object_}")
+                print(f"\n")
+                """
+
                 subject_id = subject.split("/")[-1]
                 document_number, postition = subject_id.split("#")
                 start, end = postition.split("=")[-1].split(",")
