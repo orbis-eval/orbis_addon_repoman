@@ -37,6 +37,7 @@ class Convert(object):
         pathlib.Path(folder).mkdir(parents=True, exist_ok=True)
 
         with open(os.path.join(folder, file_name), "w") as open_file:
+            lines = set()
 
             for subject, predicate, object_ in g.triples((None, self.nif_namespace.anchorOf, None)):
 
@@ -66,7 +67,8 @@ class Convert(object):
                     # """
 
                     line = "\t".join([document_number, start, end, object_2.strip(), "1", type_, surfaceForm])
-                    open_file.write(line + "\n")
+                    # open_file.write(line + "\n")
+                    lines.add(line)
 
                 for subject_2, predicate_2, object_2 in g.triples((subject, self.itsrdf_namespace.taClassRef, None)):
 
@@ -74,7 +76,7 @@ class Convert(object):
                     print(f"\n")
                     print(f"subject_2: {subject_2}")
                     print(f"predicate_2: {predicate_2}")
-                    print(f"object_3: {object_2}")
+                    print(f"object_22: {object_2}")
                     print(f"\n")
                     # """
 
@@ -82,18 +84,33 @@ class Convert(object):
 
                         types = ['http://dbpedia.org/ontology/Person', 'http://xmlns.com/foaf/0.1/Person', 'http://dbpedia.org/ontology/Organisation', 'http://dbpedia.org/class/yago/Organization108008335', 'http://dbpedia.org/ontology/PopulatedPlace', 'http://dbpedia.org/ontology/Place', 'http://dbpedia.org/ontology/TelevisionShow', 'http://dbpedia.org/ontology/Work', 'http://dbpedia.org/ontology/Work', 'http://www.w3.org/2002/07/owl#Thing']
                         if object_2.strip() in types:
-                            type_ = self.define_type(object_2)
+                            type_ = self.define_type(object_3)
 
+                            # """
+                            print(f"\n")
+                            print(f"subject_3: {subject_3}")
+                            print(f"predicate_3: {predicate_3}")
+                            print(f"object_32: {object_3}")
+                            print(f"\n")
+                            # """
+
+                            """
                             line = self.write_entity_to_file(
                                 open_file,
                                 document_number,
                                 start,
                                 end,
-                                object_3,
+                                subject_3,
                                 type_,
                                 surfaceForm
                             )
                             print(line)
+                            """
+                            line = "\t".join([document_number, start, end, subject_3.strip(), "1", type_, surfaceForm])
+                            # open_file.write(line + "\n")
+                            lines.add(line)
+            for line in lines:
+                open_file.write(line + "\n")
 
     def write_entity_to_file(self, open_file, document_number, start, end, object_2, type_, surfaceForm, separator="\t"):
         line = "\t".join([document_number, start, end, object_2.strip(), "1", type_, surfaceForm])
