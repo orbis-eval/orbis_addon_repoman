@@ -86,11 +86,11 @@ class Convert(object):
                         if object_2.strip() in types:
                             type_ = self.define_type(object_3)
 
-                            # """
+                            """
                             print(f"\n")
                             print(f"subject_3: {subject_3}")
                             print(f"predicate_3: {predicate_3}")
-                            print(f"object_32: {object_3}")
+                            print(f"object_3: {object_3}")
                             print(f"\n")
                             # """
 
@@ -106,7 +106,7 @@ class Convert(object):
                             )
                             print(line)
                             """
-                            line = "\t".join([document_number, start, end, subject_3.strip(), "1", type_, surfaceForm])
+                            line = "\t".join([document_number, start, end, object_3.strip(), "1", type_, surfaceForm])
                             # open_file.write(line + "\n")
                             lines.add(line)
             for line in lines:
