@@ -11,6 +11,9 @@ from orbis_eval.config import paths
 from orbis_eval.libs.decorators import clear_screen
 from orbis_eval.libs.config import load_config
 
+import tkinter as tk
+from tkinter import filedialog
+
 
 class Main(object):
     """docstring for Main"""
@@ -63,7 +66,7 @@ class Main(object):
             module_path = f"orbis_addon_repoman.format.{self.choice[self.selection][2]}.main"
             # print(f">>>>>>> {module_path}")
             imported_module = importlib.import_module(module_path)
-            print(*self.choice[self.selection])
+            # print(*self.choice[self.selection])
             imported_module.run(file_destination, corpus_dir, file_name)
 
     def source_exists(self, corpus_dir):
@@ -107,7 +110,20 @@ class Main(object):
         return format_list[selected_format]
 
     def load(self):
-        file_path = input("Please enter path to corpus file: ")
+
+        root = tk.Tk()
+        root.withdraw()
+
+        file_path = filedialog.askopenfilename(
+            initialdir=pathlib.Path.home(),
+            title="Select file",
+            filetypes=(
+                ("ttl files", "*.ttl"),
+                ("all files", "*.*")
+            )
+        )
+
+        # file_path = input("Please enter path to corpus file: ")
         file_name = ".".join(file_path.split("/")[-1].split(".")[:-1])
 
         print(f"file_name: {file_name}")
