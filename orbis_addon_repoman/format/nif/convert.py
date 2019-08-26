@@ -84,7 +84,7 @@ class Convert(object):
 
                         types = ['http://dbpedia.org/ontology/Person', 'http://xmlns.com/foaf/0.1/Person', 'http://dbpedia.org/ontology/Organisation', 'http://dbpedia.org/class/yago/Organization108008335', 'http://dbpedia.org/ontology/PopulatedPlace', 'http://dbpedia.org/ontology/Place', 'http://dbpedia.org/ontology/TelevisionShow', 'http://dbpedia.org/ontology/Work', 'http://dbpedia.org/ontology/Work', 'http://www.w3.org/2002/07/owl#Thing']
                         if object_2.strip() in types:
-                            type_ = self.define_type(object_3)
+                            type_ = self.define_type(object_2)
 
                             """
                             print(f"\n")
