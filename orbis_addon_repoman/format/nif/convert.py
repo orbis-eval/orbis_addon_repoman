@@ -78,20 +78,22 @@ class Convert(object):
                     print(f"\n")
                     # """
 
-                    types = ['http://dbpedia.org/ontology/Person', 'http://xmlns.com/foaf/0.1/Person', 'http://dbpedia.org/ontology/Organisation', 'http://dbpedia.org/class/yago/Organization108008335', 'http://dbpedia.org/ontology/PopulatedPlace', 'http://dbpedia.org/ontology/Place', 'http://dbpedia.org/ontology/TelevisionShow', 'http://dbpedia.org/ontology/Work', 'http://dbpedia.org/ontology/Work', 'http://www.w3.org/2002/07/owl#Thing']
-                    if object_2.strip() in types:
-                        type_ = self.define_type(object_2)
+                    for subject_3, predicate_3, object_3 in g.triples((subject_2, self.nif_namespace.taMsClassRef, None)):
 
-                        line = self.write_entity_to_file(
-                            open_file,
-                            document_number,
-                            start,
-                            end,
-                            object_2,
-                            type_,
-                            surfaceForm
-                        )
-                        # print(line)
+                        types = ['http://dbpedia.org/ontology/Person', 'http://xmlns.com/foaf/0.1/Person', 'http://dbpedia.org/ontology/Organisation', 'http://dbpedia.org/class/yago/Organization108008335', 'http://dbpedia.org/ontology/PopulatedPlace', 'http://dbpedia.org/ontology/Place', 'http://dbpedia.org/ontology/TelevisionShow', 'http://dbpedia.org/ontology/Work', 'http://dbpedia.org/ontology/Work', 'http://www.w3.org/2002/07/owl#Thing']
+                        if object_2.strip() in types:
+                            type_ = self.define_type(object_2)
+
+                            line = self.write_entity_to_file(
+                                open_file,
+                                document_number,
+                                start,
+                                end,
+                                object_3,
+                                type_,
+                                surfaceForm
+                            )
+                            print(line)
 
     def write_entity_to_file(self, open_file, document_number, start, end, object_2, type_, surfaceForm, separator="\t"):
         line = "\t".join([document_number, start, end, object_2.strip(), "1", type_, surfaceForm])
