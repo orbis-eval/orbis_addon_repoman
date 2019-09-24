@@ -7,9 +7,11 @@ import pathlib
 import re
 import shutil
 
-from orbis_eval import app
 from orbis_eval.config import paths
 from orbis_addon_repoman.format.nif import convert
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 def list_available_corpora(config):
@@ -26,7 +28,7 @@ def list_available_corpora(config):
             if file_format == "nif":
                 corpora = get_nif_corpora(config['corpora'][file_format][source])
                 list_of_available_corpora += corpora
-    app.logger.debug(list_of_available_corpora)
+    logger.debug(list_of_available_corpora)
     return list_of_available_corpora
 
 

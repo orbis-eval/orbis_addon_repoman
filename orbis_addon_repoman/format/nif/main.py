@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from . import convert
-from orbis_eval import app
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 def run(file_destination, corpus_dir, file_name):

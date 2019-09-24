@@ -3,10 +3,13 @@
 import os
 import time
 import importlib
+import logging
 
 from orbis_addon_repoman import config
 from orbis_eval.libs.decorators import clear_screen
 from orbis_eval.core.base import AddonBaseClass
+
+logger = logging.getLogger(__name__)
 
 
 class Main(AddonBaseClass):

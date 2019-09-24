@@ -6,13 +6,15 @@ import os
 import pathlib
 import shutil
 
-from orbis_eval import app
 from orbis_eval.config import paths
 from orbis_eval.libs.decorators import clear_screen
 from orbis_eval.libs.config import load_config
 
 import tkinter as tk
 from tkinter import filedialog
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 class Main(object):
@@ -115,7 +117,7 @@ class Main(object):
         root.withdraw()
 
         file_path = filedialog.askopenfilename(
-            initialdir=pathlib.Path.home(),
+            initialdir=pathlib.Path.home() / 'Data' / 'Orbis' / 'data' / 'corpora' / 'VoxEL',
             title="Select file",
             filetypes=(
                 ("ttl files", "*.ttl"),
