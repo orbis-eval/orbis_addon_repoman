@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-from orbis_eval import app
+from orbis_eval.core import app
 
 def menu(all=False):
     os.system('cls')  # on Windows

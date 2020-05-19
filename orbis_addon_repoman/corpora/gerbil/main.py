@@ -6,6 +6,7 @@ import os
 import pathlib
 import re
 import shutil
+from datetime import datetime
 
 from orbis_eval.config import paths
 from orbis_addon_repoman.format.nif import convert
@@ -99,8 +100,9 @@ def download(corpus_name, corpus_url):
     pathlib.Path(download_destination).mkdir(parents=True, exist_ok=True)
     download_destination = os.path.join(download_destination, f"{download_name}.{download_filetype}")
     urlretrieve(corpus_url, download_destination)
+    download_time = datetime.now()
     if download_filetype == "ttl":
-        convert.convert(download_destination, corpus_dir, download_name)
+        convert.convert(download_destination, corpus_dir, download_name, corpus_url, download_time)
 
 
 def load():

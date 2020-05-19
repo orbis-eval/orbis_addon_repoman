@@ -5,6 +5,7 @@ import importlib
 import os
 import pathlib
 import shutil
+from datetime import datetime
 
 from orbis_eval.config import paths
 from orbis_eval.libs.decorators import clear_screen
@@ -62,14 +63,14 @@ class Main(object):
         if action == "load":
             file_destination, corpus_dir, file_name = self.load()
         else:
-            file_destination, corpus_dir, file_name = self.download()
+            file_destination, corpus_dir, file_name, corpus_url, download_time = self.download()
 
         if file_destination:
             module_path = f"orbis_addon_repoman.format.{self.choice[self.selection][2]}.main"
             # print(f">>>>>>> {module_path}")
             imported_module = importlib.import_module(module_path)
             # print(*self.choice[self.selection])
-            imported_module.run(file_destination, corpus_dir, file_name)
+            imported_module.run(file_destination, corpus_dir, file_name, corpus_url, download_time)
 
     def source_exists(self, corpus_dir):
         if pathlib.Path(corpus_dir).is_dir():
@@ -94,8 +95,9 @@ class Main(object):
             pathlib.Path(download_destination).mkdir(parents=True, exist_ok=True)
             download_destination = os.path.join(download_destination, f"{download_name}.{download_filetype}")
             urlretrieve(corpus_url, download_destination)
+            download_time = datetime.now()
 
-            return download_destination, corpus_dir, download_name
+            return download_destination, corpus_dir, download_name, corpus_url, download_time
         return False
 
     def ask_for_format(self):

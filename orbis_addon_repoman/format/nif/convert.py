@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from rdflib import Namespace, Graph
+from rdflib import Namespace, Graph, term
 import os
 import pathlib
-
 from orbis_plugin_aggregation_dbpedia_entity_types import Main as dbpedia_entity_types
 
 import logging
@@ -17,8 +16,12 @@ class Convert(object):
         super(Convert, self).__init__()
         self.nif_namespace = Namespace("http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#")
         self.itsrdf_namespace = Namespace("http://www.w3.org/2005/11/its/rdf#")
+        self.rdf_namespace = Namespace("<http://www.w3.org/1999/02/22-rdf-syntax-ns#>")
+        self.void_namespace = Namespace("http://rdfs.org/ns/void#")  # ????
 
-    def convert(self, download_destination, corpus_dir, download_name):
+    def convert(self, download_destination, corpus_dir, download_name, corpus_url, download_time):
+        with open(os.path.join(corpus_dir, "source.txt"), "w") as open_file:
+            open_file.write(f"Downloaded from {corpus_url} at {download_time}")
         g = Graph()
         g.parse(download_destination, format="turtle")
         self.extract_files_from_nif_corpus(g, os.path.join(corpus_dir, "corpus"))
@@ -40,6 +43,34 @@ class Convert(object):
 
         with open(os.path.join(folder, file_name), "w") as open_file:
             lines = set()
+
+            """
+            # Getting provinence
+            # results = g.triples((term.URIRef('http://gerbil.aksw.org/gerbil/dataId/corpora/N3-Reuters-128'), None, None))
+            results = g.triples((None, self.nif_namespace.anchorOf, None))
+
+            with open("result.ttl", "w") as open_file:
+                for result in results:
+                    open_file.write(" -> ".join([res for res in result]) + "\n")
+
+            for result in results:
+                print(result)
+            print(42 * "#")
+            return
+            """
+
+            """
+            print("\n", 42 * "", "\n")
+            print(f"corpusReference: {r_subject}")
+            print(f"predicate: {r_predicate}")
+            print(f"object: {r_object}")
+            print(f"\n")
+            """
+            """
+            <http://gerbil.aksw.org/gerbil/dataId/corpora/N3-Reuters-128>
+              a void:DatasetDescription;
+              foaf:primaryTopic <http://gerbil.aksw.org/gerbil/dataId/corpora/N3-Reuters-128#dataset>.
+            """
 
             for subject, predicate, object_ in g.triples((None, self.nif_namespace.anchorOf, None)):
 
