@@ -94,7 +94,9 @@ class Main(object):
             download_destination = os.path.join(corpus_dir, "source")
             pathlib.Path(download_destination).mkdir(parents=True, exist_ok=True)
             download_destination = os.path.join(download_destination, f"{download_name}.{download_filetype}")
+            print(f"Downloading {corpus_url}", end="\r")
             urlretrieve(corpus_url, download_destination)
+            print(f"Downloading {corpus_url} finished")
             download_time = datetime.now()
 
             return download_destination, corpus_dir, download_name, corpus_url, download_time

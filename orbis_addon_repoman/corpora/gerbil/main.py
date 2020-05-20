@@ -84,26 +84,30 @@ def get_corpus_download(corpus_dict):
             if type_ in ['dataid:Distribution', 'dcat:Distribution']:
                 return item['accessURL']
 
-
+"""
 def download(corpus_name, corpus_url):
     corpus_dir = os.path.join(paths.corpora_dir, corpus_name.lower())
     if pathlib.Path(corpus_dir).is_dir():
         print(f"Corpus might exist already. A folder with the same name has been found: {corpus_dir}")
         overwrite = input("Do you want to overwrite it? (Y/n) ")
+        print(0)
         if overwrite not in ["Y", "y", ""]:
             print("Download canceled.")
             return False
+    print(1)
     pathlib.Path(corpus_dir).mkdir(parents=True, exist_ok=True)
     download_name = corpus_url.split("/")[-1].split(".")[0]
     download_filetype = corpus_url.split("/")[-1].split(".")[-1]
     download_destination = os.path.join(corpus_dir, "source")
     pathlib.Path(download_destination).mkdir(parents=True, exist_ok=True)
     download_destination = os.path.join(download_destination, f"{download_name}.{download_filetype}")
+    print(f"Downloading {corpus_url}", end="\r")
     urlretrieve(corpus_url, download_destination)
+    print(f"Downloading {corpus_url} finished")
     download_time = datetime.now()
     if download_filetype == "ttl":
         convert.convert(download_destination, corpus_dir, download_name, corpus_url, download_time)
-
+"""
 
 def load():
     file_path = input("Please enter path to NIF corpus file: ")
