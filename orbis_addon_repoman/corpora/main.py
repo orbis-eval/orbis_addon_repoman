@@ -5,7 +5,9 @@ import importlib
 import os
 import pathlib
 import shutil
+from distutils.dir_util import copy_tree
 from datetime import datetime
+import time
 
 from orbis_eval.config import paths
 from orbis_eval.libs.decorators import clear_screen
@@ -28,6 +30,15 @@ class Main(object):
         self.available_corpora = {}
         self.choice = {}
         self.selection = None
+        self.local = False
+
+    def select_location(self):
+        print("Please select the location of the corpus:")
+        print(f'[1]:\t Load local corpus file')
+        print(f'[2]:\t Load file from gerbil')
+        choice = int(input("Selection: "))
+        if choice == 1:
+            self.local = True
 
     def fetch_available(self):
         for file_format in self.config['corpora']:
@@ -39,38 +50,68 @@ class Main(object):
 
     @clear_screen()
     def select(self):
-        print("Please select the corpus you want to download:")
+        """
+        hacking it to work... dont judge me. will fix
+        """
+        print(self.local)
+        if self.local:
+            self.choice[0] = ["local", None, None, "local"]
+            self.selection = 0
+        else:
+            print("anyway")
+            self.fetch_available()
+            print("Please select the corpus you want to download:")
 
-        counter = 0
-        for source, item in self.available_corpora.items():
-            source_hash = len(source) * "#"
-            print(f"\n{source}\n{source_hash}")
+            counter = 0
+            for source, item in self.available_corpora.items():
+                source_hash = len(source) * "#"
+                print(f"\n{source}\n{source_hash}")
 
-            for corpus in self.available_corpora[source]:
-                print(f'[{counter}]:\t {corpus[0]} ({corpus[2]})')
-                self.choice[counter] = *corpus, source
-                counter += 1
+                for corpus in self.available_corpora[source]:
+                    print(f'[{counter}]:\t {corpus[0]} ({corpus[2]})')
+                    self.choice[counter] = *corpus, source
+                    counter += 1
 
-        print(f'[{counter}]:\t Load local corpus file')
-        self.choice[counter] = ("local", None, "nif", "local")
+            # print(f'[{counter}]:\t Load local corpus file')
+            self.choice[counter] = ["local", None, None, "local"]
 
-        self.selection = int(input("Selection: "))
+            self.selection = int(input("Selection: "))
 
     def down_and_load(self):
 
         action = "load" if self.choice[self.selection][0] == "local" else "download"
 
         if action == "load":
-            file_destination, corpus_dir, file_name = self.load()
+            file_destination, corpus_dir, file_name, corpus_url, download_time = self.load()
         else:
             file_destination, corpus_dir, file_name, corpus_url, download_time = self.download()
 
+        if not self.choice[self.selection][2]:
+            file_ending = file_name.split(".")[-1]
+            print(f"71: {file_name} File ending: {file_ending}")
+
+            module_name = None
+            is_nif = input("Is this a NIF file? (Y/n)")
+            if is_nif in ["Y", "y", ""]:
+                module_name = "nif"
+            else:
+                is_wl_harvest = input("Is this a Weblyzard Harvest JSON file? (Y/n)")
+                if is_wl_harvest in ["Y", "y", ""]:
+                    print("Selection[2]: ", self.choice[self.selection][2])
+                    module_name = "wl_harvest_json"
+                else:
+                    file_destination = None
+
         if file_destination:
-            module_path = f"orbis_addon_repoman.format.{self.choice[self.selection][2]}.main"
+            module_path = f"orbis_addon_repoman.format.{module_name}.main"
             # print(f">>>>>>> {module_path}")
             imported_module = importlib.import_module(module_path)
             # print(*self.choice[self.selection])
             imported_module.run(file_destination, corpus_dir, file_name, corpus_url, download_time)
+        else:
+            print("No file available.")
+            time.sleep(5)
+            self.select()
 
     def source_exists(self, corpus_dir):
         if pathlib.Path(corpus_dir).is_dir():
@@ -117,45 +158,95 @@ class Main(object):
 
     def load(self):
 
+        print("What do you want to open?")
+        print("[1] file")
+        print("[2] folder containing json files")
+
+        selection = input("Please select: ")
         root = tk.Tk()
         root.withdraw()
 
-        file_path = filedialog.askopenfilename(
-            initialdir=pathlib.Path.home() / 'Data' / 'Orbis' / 'data' / 'corpora' / 'VoxEL',
-            title="Select file",
-            filetypes=(
-                ("ttl files", "*.ttl"),
-                ("all files", "*.*")
+        if selection == "1":
+            file_path = filedialog.askopenfilename(
+                initialdir=pathlib.Path.home(),
+                title="Select file",
+                filetypes=(
+                    ("ttl files", "*.ttl"),
+                    ("json files", "*.json"),
+                    ("all files", "*.*")
+                )
             )
-        )
 
-        # file_path = input("Please enter path to corpus file: ")
-        file_name = ".".join(file_path.split("/")[-1].split(".")[:-1])
+            # file_path = input("Please enter path to corpus file: ")
+            file_name = ".".join(file_path.split("/")[-1].split(".")[:-1])
 
-        print(f"file_name: {file_name}")
-        file_name_ok = input(f'Is the corpus called "{file_name}"? (Y/n) ')
-        while file_name_ok not in ["Y", "y", ""]:
-            file_name = input("Please enter corpus name: ")
-            file_name_ok = input(f"Is the corpus name {file_name} ok? (Y/n) ")
+            print(f"file_name: {file_name}")
+            file_name_ok = input(f'Is the corpus called "{file_name}"? (Y/n) ')
+            while file_name_ok not in ["Y", "y", ""]:
+                file_name = input("Please enter corpus name: ")
+                file_name_ok = input(f"Is the corpus name {file_name} ok? (Y/n) ")
 
-        corpus_dir = os.path.join(paths.corpora_dir, file_name.lower())
-        if not self.source_exists(corpus_dir):
+            corpus_dir = os.path.join(paths.corpora_dir, file_name.lower())
+            if not self.source_exists(corpus_dir):
 
-            pathlib.Path(corpus_dir).mkdir(parents=True, exist_ok=True)
-            file_filetype = file_path.split("/")[-1].split(".")[-1]
+                pathlib.Path(corpus_dir).mkdir(parents=True, exist_ok=True)
+                file_filetype = file_path.split("/")[-1].split(".")[-1]
 
-            file_destination = os.path.join(corpus_dir, "source")
-            pathlib.Path(file_destination).mkdir(parents=True, exist_ok=True)
-            file_destination = os.path.join(file_destination, f"{file_name}.{file_filetype}")
-            print(f"file_path: {file_path}")
-            print(f"file_destination: {file_destination}")
+                file_destination = os.path.join(corpus_dir, "source")
+                pathlib.Path(file_destination).mkdir(parents=True, exist_ok=True)
+                file_destination = os.path.join(file_destination, f"{file_name}.{file_filetype}")
+                print(f"file_path: {file_path}")
+                print(f"file_destination: {file_destination}")
 
-            shutil.copy(str(file_path), str(file_destination))
+                shutil.copy(str(file_path), str(file_destination))
+                download_time = datetime.now()
+                return file_destination, corpus_dir, file_name, "local_file", download_time
 
-            return file_destination, corpus_dir, file_name
+        elif selection == "2":
+            file_path = filedialog.askdirectory(
+                initialdir=pathlib.Path.home() / "ownCloud" / "Projects" / "Orbis" / "src",
+                title="Select folder"
+            )
+
+            # file_path = input("Please enter path to corpus file: ")
+            print(file_path)
+            file_name = file_path.split("/")[-1]
+
+            print(f"file_name: {file_name}")
+            file_name_ok = input(f'Is the corpus called "{file_name}"? (Y/n) ')
+            while file_name_ok not in ["Y", "y", ""]:
+                file_name = input("Please enter corpus name: ")
+                file_name_ok = input(f"Is the corpus name {file_name} ok? (Y/n) ")
+
+            corpus_dir = os.path.join(paths.corpora_dir, file_name.lower())
+
+            if not self.source_exists(corpus_dir):
+
+                pathlib.Path(corpus_dir).mkdir(parents=True, exist_ok=True)
+
+                file_destination = os.path.join(corpus_dir, "source")
+                # pathlib.Path(file_destination).mkdir(parents=True, exist_ok=True)
+                # file_destination = os.path.join(file_destination, f"{file_name}")
+
+                print(f"file_path: {file_path}")
+                print(f"file_destination: {file_destination}")
+
+                dirpath = pathlib.Path(file_destination)
+                if dirpath.exists() and dirpath.is_dir():
+                    shutil.rmtree(dirpath)
+                    dirpath.mkdir(parents=True, exist_ok=True)
+
+                copy_tree(str(file_path), str(file_destination))
+                download_time = datetime.now()
+
+                return file_destination, corpus_dir, file_name, "local_file", download_time
+        else:
+            print("Invalid selection. Please try again!")
+            self.load()
+
         return False
 
     def run(self):
-        self.fetch_available()
+        self.select_location()
         self.select()
         self.down_and_load()
