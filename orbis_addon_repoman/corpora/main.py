@@ -101,6 +101,8 @@ class Main(object):
                     module_name = "wl_harvest_json"
                 else:
                     file_destination = None
+        else:
+            module_name = self.choice[self.selection][2]
 
         if file_destination:
             module_path = f"orbis_addon_repoman.format.{module_name}.main"
