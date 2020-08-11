@@ -3,7 +3,6 @@
 from urllib.request import urlopen, urlretrieve
 import json
 import os
-import pathlib
 import re
 import shutil
 from datetime import datetime
@@ -118,20 +117,20 @@ def load():
         file_name = input("Please enter corpus name: ")
         file_name_ok = input(f"Is the corpus name {file_name} ok? (Y/n) ")
 
-    corpus_dir = os.path.join(paths.corpora_dir, file_name.lower())
-    if pathlib.Path(corpus_dir).is_dir():
+    corpus_dir = paths.corpora_dir / file_name.lower()
+    if corpus_dir.is_dir():
         print(f"Corpus might exist already. A folder with the same name has been found: {corpus_dir}")
         overwrite = input("Do you want to overwrite it? (Y/n) ")
         if overwrite not in ["Y", "y", ""]:
             print("Download canceled.")
             return False
 
-    pathlib.Path(corpus_dir).mkdir(parents=True, exist_ok=True)
+    corpus_dir.mkdir(parents=True, exist_ok=True)
     file_filetype = file_path.split("/")[-1].split(".")[-1]
 
-    file_destination = os.path.join(corpus_dir, "source")
-    pathlib.Path(file_destination).mkdir(parents=True, exist_ok=True)
-    file_destination = os.path.join(file_destination, f"{file_name}.{file_filetype}")
+    file_destination = corpus_dir / "source"
+    file_destination.mkdir(parents=True, exist_ok=True)
+    file_destination = file_destination / f"{file_name}.{file_filetype}"
 
     shutil.copy(str(file_path), str(file_destination))
     if file_filetype == "ttl":

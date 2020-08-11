@@ -73,7 +73,7 @@ class Main(object):
             imported_module.run(file_destination, corpus_dir, file_name, corpus_url, download_time)
 
     def source_exists(self, corpus_dir):
-        if pathlib.Path(corpus_dir).is_dir():
+        if corpus_dir.is_dir():
             print(f"Corpus might exist already. A folder with the same name has been found: {corpus_dir}")
             overwrite = input("Do you want to overwrite it? (Y/n) ")
             if overwrite not in ["Y", "y", ""]:
@@ -85,15 +85,15 @@ class Main(object):
 
         corpus_url = self.choice[self.selection][1]
         download_name = corpus_url.split("/")[-1].split(".")[0]
-        corpus_dir = os.path.join(paths.corpora_dir, download_name.lower())
+        corpus_dir = paths.corpora_dir / download_name.lower()
 
         if not self.source_exists(corpus_dir):
-            pathlib.Path(corpus_dir).mkdir(parents=True, exist_ok=True)
+            corpus_dir.mkdir(parents=True, exist_ok=True)
             download_name = corpus_url.split("/")[-1].split(".")[0]
             download_filetype = corpus_url.split("/")[-1].split(".")[-1]
-            download_destination = os.path.join(corpus_dir, "source")
-            pathlib.Path(download_destination).mkdir(parents=True, exist_ok=True)
-            download_destination = os.path.join(download_destination, f"{download_name}.{download_filetype}")
+            download_destination = corpus_dir / "source"
+            download_destination.mkdir(parents=True, exist_ok=True)
+            download_destination = download_destination / f"{download_name}.{download_filetype}"
             print(f"Downloading {corpus_url}", end="\r")
             urlretrieve(corpus_url, download_destination)
             print(f"Downloading {corpus_url} finished")
@@ -138,15 +138,15 @@ class Main(object):
             file_name = input("Please enter corpus name: ")
             file_name_ok = input(f"Is the corpus name {file_name} ok? (Y/n) ")
 
-        corpus_dir = os.path.join(paths.corpora_dir, file_name.lower())
+        corpus_dir = paths.corpora_dir / file_name.lower()
         if not self.source_exists(corpus_dir):
 
-            pathlib.Path(corpus_dir).mkdir(parents=True, exist_ok=True)
+            corpus_dir.mkdir(parents=True, exist_ok=True)
             file_filetype = file_path.split("/")[-1].split(".")[-1]
 
-            file_destination = os.path.join(corpus_dir, "source")
+            file_destination = corpus_dir / "source"
             pathlib.Path(file_destination).mkdir(parents=True, exist_ok=True)
-            file_destination = os.path.join(file_destination, f"{file_name}.{file_filetype}")
+            file_destination = file_destination / f"{file_name}.{file_filetype}"
             print(f"file_path: {file_path}")
             print(f"file_destination: {file_destination}")
 

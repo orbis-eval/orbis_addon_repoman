@@ -2,7 +2,6 @@
 
 from rdflib import Namespace, Graph, term
 import os
-import pathlib
 from orbis_plugin_aggregation_dbpedia_entity_types import Main as dbpedia_entity_types
 
 import logging
@@ -20,34 +19,34 @@ class Convert(object):
         self.void_namespace = Namespace("http://rdfs.org/ns/void#")  # ????
 
     def convert(self, download_destination, corpus_dir, download_name, corpus_url, download_time):
-        with open(os.path.join(corpus_dir, "source.txt"), "w") as open_file:
+        with open(corpus_dir / "source.txt", "w") as open_file:
             open_file.write(f"Downloaded from {corpus_url} at {download_time}")
         print("Building graph")
         g = Graph()
-        g.parse(download_destination, format="turtle")
+        g.parse(str(download_destination), format="turtle")
         print("Extracting documents from nif")
-        self.extract_files_from_nif_corpus(g, os.path.join(corpus_dir, "corpus"))
+        self.extract_files_from_nif_corpus(g, corpus_dir / "corpus")
         print("Extracting entities from nif")
-        self.extract_entities_from_nif_corpus(g, os.path.join(corpus_dir, "gold"), f"{download_name}.gs")
+        self.extract_entities_from_nif_corpus(g, corpus_dir / "gold", f"{download_name}.gs")
 
     def extract_files_from_nif_corpus(self, g, folder):
-        pathlib.Path(folder).mkdir(parents=True, exist_ok=True)
+        folder.mkdir(parents=True, exist_ok=True)
 
         for subject, predicate, object_ in g.triples((None, self.nif_namespace.isString, None)):
             document_number = (subject.split("/")[-1]).split("#")[0]
-            filename = os.path.join(folder, document_number + ".txt")
+            filename = folder / f"{document_number}.txt"
 
             if not os.path.exists(filename):
                 with open(filename, "w", encoding="utf-8") as open_file:
                     open_file.write(object_)
 
     def extract_entities_from_nif_corpus(self, g, folder, file_name):
-        pathlib.Path(folder).mkdir(parents=True, exist_ok=True)
+        folder.mkdir(parents=True, exist_ok=True)
 
         # Deactivating type detection
         type_ = "notfound"
 
-        with open(os.path.join(folder, file_name), "w") as open_file:
+        with open(folder / file_name, "w") as open_file:
             lines = set()
 
             for subject, predicate, object_ in g.triples((None, self.nif_namespace.anchorOf, None)):

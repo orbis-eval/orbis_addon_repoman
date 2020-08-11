@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import os
+from pathlib import Path
 import time
 import importlib
 import logging
@@ -17,7 +17,7 @@ class Main(AddonBaseClass):
 
     def __init__(self):
         super(AddonBaseClass, self).__init__()
-        self.addon_path = os.path.realpath(__file__).replace("main.py", "")
+        self.addon_path = Path(__file__).parent
 
     @clear_screen()
     def run(self):
