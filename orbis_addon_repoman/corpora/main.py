@@ -24,7 +24,7 @@ class Main(object):
     def __init__(self, addon_path):
         super(Main, self).__init__()
         self.addon_path = addon_path
-        self.config = load_config([f"{self.addon_path}/sources.yaml"])[0]
+        self.config = load_config([self.addon_path / "sources.yaml"])[0]
         self.available_corpora = {}
         self.choice = {}
         self.selection = None
