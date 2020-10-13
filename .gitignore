@@ -104,3 +104,6 @@ ENV/
 
 # Dolphin
 .directory
+
+#Ignore IDEA setting fils
+.idea
