@@ -22,11 +22,14 @@ class Convert(object):
     def convert(self, download_destination, corpus_dir, download_name, corpus_url, download_time):
         with open(os.path.join(corpus_dir, "source.txt"), "w") as open_file:
             open_file.write(f"Downloaded from {corpus_url} at {download_time}")
+
         print("Building graph")
         g = Graph()
         g.parse(download_destination, format="turtle")
+
         print("Extracting documents from nif")
         self.extract_files_from_nif_corpus(g, os.path.join(corpus_dir, "corpus"))
+
         print("Extracting entities from nif")
         self.extract_entities_from_nif_corpus(g, os.path.join(corpus_dir, "gold"), f"{download_name}.gs")
 
