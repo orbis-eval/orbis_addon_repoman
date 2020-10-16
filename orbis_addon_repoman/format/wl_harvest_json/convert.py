@@ -37,12 +37,12 @@ class Convert(object):
 
             if not os.path.exists(filename):
                 with open(filename, "w", encoding="utf-8") as open_file:
-                    open_file.write(gold_content['text'])
+                    open_file.write(gold_content['html'])
 
             filename = os.path.join(gold_folder, doc_id + ".txt")
             if not os.path.exists(filename):
                 with open(filename, "w", encoding="utf-8") as open_file:
-                    open_file.write(gold_content['html'])
+                    open_file.write(gold_content['text'])
 
     def extract_entities(self, download_destination, corpus_dir, download_name):
         gold_folder = os.path.join(corpus_dir, "gold")
@@ -64,10 +64,8 @@ class Convert(object):
             doc_id = hashlib.md5(gold_content['url'].encode()).hexdigest()
 
             for post in gold_content['gold_standard_annotation']:
-                # print(post)
                 for item in ['post_text', 'datetime', 'user', 'post_link']:
                     if post.get(item):
-                        print("Processing")
                         document_number = doc_id
                         start = str(post[item]['start'])
                         end = str(post[item]['end'])
@@ -79,5 +77,4 @@ class Convert(object):
         with open(os.path.join(gold_folder, file_name), "w") as open_file:
             print(f"Writing to: {os.path.join(folder, file_name)}")
             for line in sorted(lines):
-                # print(f"Writing line: {line}")
                 open_file.write(f'{line}\n')
