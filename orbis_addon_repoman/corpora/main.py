@@ -100,7 +100,12 @@ class Main(object):
                     print("Selection[2]: ", self.choice[self.selection][2])
                     module_name = "wl_harvest_json"
                 else:
-                    file_destination = None
+                    is_cluster = input("Is this a cluster JSON file? (Y/n)")
+                    if is_cluster in ["Y", "y", ""]:
+                        print("Selection[2]: ", self.choice[self.selection][2])
+                        module_name = "cluster_json"
+                    else:
+                        file_destination = None
         else:
             module_name = self.choice[self.selection][2]
 
