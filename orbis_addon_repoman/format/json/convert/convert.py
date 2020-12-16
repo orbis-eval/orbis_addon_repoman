@@ -7,6 +7,7 @@ import pathlib
 import hashlib
 
 import logging
+from ..folder import iterate_over_json_files
 
 logger = logging.getLogger(__name__)
 
@@ -25,12 +26,8 @@ class Convert(object):
         gold_dir = self._create_folder(corpus_dir, "gold")
         corpus_dir = self._create_folder(corpus_dir, "corpus")
 
-        folder = pathlib.Path(download_destination)
         gold_annotations = {}
-        for file in list(folder.glob('*.json')):
-            with open(file, "r") as open_file:
-                gold_content = json.load(open_file)
-
+        for gold_content, file in iterate_over_json_files(download_destination):
                 doc_id = hashlib.md5(file.name.encode()).hexdigest()
                 filename = os.path.join(corpus_dir, doc_id + ".txt")
                 annotations = self._get_annotations(gold_content['annotations'], file.name)
@@ -42,32 +39,8 @@ class Convert(object):
         filename = os.path.join(gold_dir, download_name + ".json.gz")
         self._write_gold_file(filename, gold_annotations)
 
-    @staticmethod
-    def _get_annotations(clusters, file_name):
-        annotations = []
-        if type(clusters) == dict:
-            for cluster, items in clusters.items():
-                if items:
-                    for item in items:
-                        if "key" in item and "entity_type" in item and "surfaceForm" in item and \
-                                "entity_metadata" in item and \
-                                "document_index_start" in item["entity_metadata"] and \
-                                "document_index_end" in item["entity_metadata"]:
-                            annotations.append({
-                                "key": item["key"],
-                                "score": 1,
-                                "entity_type": item["entity_type"].lower(),
-                                "type_url": item["entity_type"].lower(),
-                                "surfaceForm": item["surfaceForm"],
-                                "start": item["entity_metadata"]["document_index_start"][0],
-                                "end": item["entity_metadata"]["document_index_end"][0],
-                                "annotations": [{"type": "Cluster", "entity": cluster}],
-                            })
-                        else:
-                            logger.warning(f"Ignored item {item}")
-        else:
-            logger.warning(f"List instead of dict in file {file_name}")
-        return annotations
+    def _get_annotations(self, clusters, file_name):
+        raise NotImplementedError
 
     @staticmethod
     def _create_folder(base_dir, folder):

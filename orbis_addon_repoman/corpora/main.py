@@ -72,7 +72,6 @@ class Main(object):
                     self.choice[counter] = *corpus, source
                     counter += 1
 
-            # print(f'[{counter}]:\t Load local corpus file')
             self.choice[counter] = ["local", None, None, "local"]
 
             self.selection = int(input("Selection: "))
@@ -95,25 +94,18 @@ class Main(object):
             if is_nif in ["Y", "y", ""]:
                 module_name = "nif"
             else:
-                is_wl_harvest = input("Is this a Weblyzard Harvest JSON file? (Y/n)")
+                is_wl_harvest = input("Should json files be loaded? (Y/n)")
                 if is_wl_harvest in ["Y", "y", ""]:
                     print("Selection[2]: ", self.choice[self.selection][2])
-                    module_name = "wl_harvest_json"
+                    module_name = "json"
                 else:
-                    is_cluster = input("Is this a cluster JSON file? (Y/n)")
-                    if is_cluster in ["Y", "y", ""]:
-                        print("Selection[2]: ", self.choice[self.selection][2])
-                        module_name = "cluster_json"
-                    else:
-                        file_destination = None
+                    file_destination = None
         else:
             module_name = self.choice[self.selection][2]
 
         if file_destination:
             module_path = f"orbis_addon_repoman.format.{module_name}.main"
-            # print(f">>>>>>> {module_path}")
             imported_module = importlib.import_module(module_path)
-            # print(*self.choice[self.selection])
             imported_module.run(file_destination, corpus_dir, file_name, corpus_url, download_time)
         else:
             print("No file available.")
@@ -184,7 +176,6 @@ class Main(object):
                 )
             )
 
-            # file_path = input("Please enter path to corpus file: ")
             file_name = ".".join(file_path.split("/")[-1].split(".")[:-1])
 
             print(f"file_name: {file_name}")
@@ -215,7 +206,6 @@ class Main(object):
                 title="Select folder"
             )
 
-            # file_path = input("Please enter path to corpus file: ")
             print(file_path)
             file_name = file_path.split("/")[-1]
 
@@ -232,8 +222,6 @@ class Main(object):
                 pathlib.Path(corpus_dir).mkdir(parents=True, exist_ok=True)
 
                 file_destination = os.path.join(corpus_dir, "source")
-                # pathlib.Path(file_destination).mkdir(parents=True, exist_ok=True)
-                # file_destination = os.path.join(file_destination, f"{file_name}")
 
                 print(f"file_path: {file_path}")
                 print(f"file_destination: {file_destination}")
