@@ -8,6 +8,7 @@ import hashlib
 
 import logging
 from ..folder import iterate_over_json_files
+from ..annotation import get_annotation_key
 
 logger = logging.getLogger(__name__)
 
@@ -28,18 +29,21 @@ class Convert(object):
 
         gold_annotations = {}
         for gold_content, file in iterate_over_json_files(download_destination):
-                doc_id = hashlib.md5(file.name.encode()).hexdigest()
-                filename = os.path.join(corpus_dir, doc_id + ".txt")
-                annotations = self._get_annotations(gold_content['annotations'], file.name)
-                self._write_corpus_file(filename, gold_content['text'])
-                gold_annotations[doc_id] = annotations
-                if not annotations:
-                    logger.warning(f"No annotations in file [{file.name}]")
+            doc_id = hashlib.md5(file.name.encode()).hexdigest()
+            annotations = self._get_annotations(get_annotation_key(gold_content), file.name)
+            filename = os.path.join(corpus_dir, doc_id + ".txt")
+            self._write_corpus_file(filename, gold_content['text'])
+            if 'html' in gold_content:
+                filename = os.path.join(corpus_dir, doc_id + "-modified.txt")
+                self._write_corpus_file(filename, gold_content['html'])
+            gold_annotations[doc_id] = annotations
+            if not annotations:
+                logger.warning(f"No annotations in file [{file.name}]")
 
         filename = os.path.join(gold_dir, download_name + ".json.gz")
         self._write_gold_file(filename, gold_annotations)
 
-    def _get_annotations(self, clusters, file_name):
+    def _get_annotations(self, gold_annotations, file_name):
         raise NotImplementedError
 
     @staticmethod

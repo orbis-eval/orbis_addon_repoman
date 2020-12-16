@@ -13,10 +13,10 @@ class ConvertCluster(Convert):
     def __init__(self):
         super(ConvertCluster, self).__init__()
 
-    def _get_annotations(self, clusters, file_name):
+    def _get_annotations(self, gold_annotations, file_name):
         annotations = []
-        if type(clusters) == dict:
-            for cluster, items in clusters.items():
+        if type(gold_annotations) == dict:
+            for cluster, items in gold_annotations.items():
                 if items:
                     for item in items:
                         if "key" in item and "entity_type" in item and "surfaceForm" in item and \
