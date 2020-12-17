@@ -29,8 +29,8 @@ class Convert(object):
 
         gold_annotations = {}
         for gold_content, file in iterate_over_json_files(download_destination):
-            doc_id = hashlib.md5(file.name.encode()).hexdigest()
-            annotations = self._get_annotations(get_annotation_key(gold_content), file.name)
+            doc_id = hashlib.md5(gold_content['url'].encode('utf-8')).hexdigest()
+            annotations = self._get_annotations(gold_content['url'], get_annotation_key(gold_content), file.name)
             filename = os.path.join(corpus_dir, doc_id + ".txt")
             self._write_corpus_file(filename, gold_content['text'])
             if 'html' in gold_content:
@@ -43,7 +43,7 @@ class Convert(object):
         filename = os.path.join(gold_dir, download_name + ".json.gz")
         self._write_gold_file(filename, gold_annotations)
 
-    def _get_annotations(self, gold_annotations, file_name):
+    def _get_annotations(self, url, gold_annotations, file_name):
         raise NotImplementedError
 
     @staticmethod

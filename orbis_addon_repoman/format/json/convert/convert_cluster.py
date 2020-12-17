@@ -13,7 +13,7 @@ class ConvertCluster(Convert):
     def __init__(self):
         super(ConvertCluster, self).__init__()
 
-    def _get_annotations(self, gold_annotations, file_name):
+    def _get_annotations(self, url, gold_annotations, file_name):
         annotations = []
         if type(gold_annotations) == dict:
             for cluster, items in gold_annotations.items():
