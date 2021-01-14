@@ -13,9 +13,10 @@ def create(download_destination):
     convert = []
     for json_file, file in iterate_over_json_files(download_destination):
         annotations = get_annotation_key(json_file)
-        json_file = _check_json_schema(annotations)
-        if json_file and json_file not in convert:
-            convert.append(json_file)
+        if annotations:
+            json_file = _check_json_schema(annotations)
+            if json_file and json_file not in convert:
+                convert.append(json_file)
 
     return convert
 
