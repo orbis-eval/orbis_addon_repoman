@@ -15,8 +15,8 @@ class ConvertPageSegmentation(Convert):
 
     def _get_annotations(self, url, gold_annotations, file_name):
         annotations = []
-        for annotation in gold_annotations:
-            for name, item in annotation.items():
+        for name, items in gold_annotations.items():
+            for item in items:
                 annotations.append({
                     "key": url,
                     "entity_type": name,

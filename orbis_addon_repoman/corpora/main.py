@@ -96,7 +96,6 @@ class Main(object):
             else:
                 is_wl_harvest = input("Should json files be loaded? (Y/n)")
                 if is_wl_harvest in ["Y", "y", ""]:
-                    print("Selection[2]: ", self.choice[self.selection][2])
                     module_name = "json"
                 else:
                     file_destination = None

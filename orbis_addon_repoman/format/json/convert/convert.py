@@ -29,8 +29,12 @@ class Convert(object):
 
         gold_annotations = {}
         for gold_content, file in iterate_over_json_files(download_destination):
-            doc_id = hashlib.md5(gold_content['url'].encode('utf-8')).hexdigest()
-            annotations = self._get_annotations(gold_content['url'], get_annotation_key(gold_content), file.name)
+            if 'url' in gold_content:
+                doc_id = hashlib.md5(gold_content['url'].encode('utf-8')).hexdigest()
+            else:
+                doc_id = hashlib.md5(file.name.encode('utf-8')).hexdigest()
+            annotations = self._get_annotations(gold_content['url'] if 'url' in gold_content else None,
+                                                get_annotation_key(gold_content), file.name)
             filename = os.path.join(corpus_dir, doc_id + ".txt")
             self._write_corpus_file(filename, gold_content['text'])
             if 'html' in gold_content:

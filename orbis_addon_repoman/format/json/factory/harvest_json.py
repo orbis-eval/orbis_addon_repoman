@@ -3,8 +3,11 @@ from ..convert.convert_harvest import ConvertHarvest
 schema = {
     "schema": {
         "type": "array",
+        "additionalItems": False,
         "items": {
             "type": "object",
+            "required": ["post_text"],
+            "additionalProperties": False,
             "properties": {
                 "post_text": {
                     "type": "object",
@@ -38,8 +41,7 @@ schema = {
                         "end": {"type": "number"}
                     }
                 }
-            },
-            "required": ["post_text"]
+            }
         }
     },
     "convert": ConvertHarvest(),

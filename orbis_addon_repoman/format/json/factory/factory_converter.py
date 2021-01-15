@@ -17,6 +17,7 @@ def create(download_destination):
             json_file = _check_json_schema(annotations)
             if json_file and json_file not in convert:
                 convert.append(json_file)
+                print(json_file['description'])
 
     return convert
 
