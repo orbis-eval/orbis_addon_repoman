@@ -4,9 +4,10 @@ from orbis_addon_repoman.format.json.folder import iterate_over_json_files
 from .cluster_json import schema as schema_cluster
 from .harvest_json import schema as schema_harvest
 from .page_segmentation_json import schema as schema_page_segmentation
+from .education_extraction_json import schema as schema_education_extraction
 from ..annotation import get_annotation_key
 
-schemas = [schema_cluster, schema_harvest, schema_page_segmentation]
+schemas = [schema_cluster, schema_harvest, schema_education_extraction, schema_page_segmentation]
 
 
 def create(download_destination):
