@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from rdflib import Namespace, Graph, term
+from rdflib import Namespace, Graph
 import os
 import pathlib
-from orbis_plugin_aggregation_dbpedia_entity_types import Main as dbpedia_entity_types
 
 import logging
 logger = logging.getLogger(__name__)
@@ -59,11 +58,8 @@ class Convert(object):
                 document_number, postition = subject_id.split("#")
                 start, end = postition.split("=")[-1].split(",")
                 surfaceForm = object_
-                subject_2 = subject
 
                 for subject_2, predicate_2, object_2 in g.triples((subject, self.itsrdf_namespace.taIdentRef, None)):
-                    # print(f"Guessing type for {object_2} using dbpedia")
-                    # type_ = dbpedia_entity_types.get_dbpedia_type(object_2)
 
                     line = "\t".join([document_number, start, end, object_2.strip(), "1", type_, surfaceForm])
                     lines.add(line)
@@ -74,7 +70,6 @@ class Convert(object):
 
                         types = ['http://dbpedia.org/ontology/Person', 'http://xmlns.com/foaf/0.1/Person', 'http://dbpedia.org/ontology/Organisation', 'http://dbpedia.org/class/yago/Organization108008335', 'http://dbpedia.org/ontology/PopulatedPlace', 'http://dbpedia.org/ontology/Place', 'http://dbpedia.org/ontology/TelevisionShow', 'http://dbpedia.org/ontology/Work', 'http://dbpedia.org/ontology/Work', 'http://www.w3.org/2002/07/owl#Thing']
                         if object_2.strip() in types:
-                            # type_ = self.define_type(object_2)
 
                             line = "\t".join([document_number, start, end, object_3.strip(), "1", type_, surfaceForm])
                             lines.add(line)
