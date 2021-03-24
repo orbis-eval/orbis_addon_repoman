@@ -40,6 +40,9 @@ class Convert(object):
             if 'html' in gold_content:
                 filename = os.path.join(corpus_dir, doc_id + "-modified.txt")
                 self._write_corpus_file(filename, gold_content['html'])
+            if 'url' in gold_content:
+                filename = os.path.join(corpus_dir, doc_id + "-url.txt")
+                self._write_corpus_file(filename, gold_content['url'])
             if doc_id not in gold_annotations:
                 gold_annotations[doc_id] = annotations
             else:
