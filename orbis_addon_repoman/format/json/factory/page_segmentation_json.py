@@ -5,10 +5,10 @@ schema = {
         "type": "object",
         "additionalProperties": False,
         "properties": {
-            "target_group": {"$ref": "#/definitions/cluster"},
-            "certificate": {"$ref": "#/definitions/cluster"},
-            "course_content": {"$ref": "#/definitions/cluster"},
-            "prerequisite": {"$ref": "#/definitions/cluster"}
+            "target_groups": {"$ref": "#/definitions/cluster"},
+            "certificates": {"$ref": "#/definitions/cluster"},
+            "course_contents": {"$ref": "#/definitions/cluster"},
+            "prerequisites": {"$ref": "#/definitions/cluster"}
         },
         "definitions": {
             "cluster": {
