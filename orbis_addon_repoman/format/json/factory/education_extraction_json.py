@@ -8,7 +8,9 @@ schema = {
             "target_groups": {"$ref": "#/definitions/cluster"},
             "certificates": {"$ref": "#/definitions/cluster"},
             "course_contents": {"$ref": "#/definitions/cluster"},
-            "prerequisites": {"$ref": "#/definitions/cluster"}
+            "prerequisites": {"$ref": "#/definitions/cluster"},
+            "learning_objectives": {"$ref": "#/definitions/cluster"},
+            "none_types": {"$ref": "#/definitions/cluster"},
         },
         "definitions": {
             "cluster": {
