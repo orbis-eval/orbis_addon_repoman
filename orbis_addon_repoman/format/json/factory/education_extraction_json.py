@@ -10,7 +10,7 @@ schema = {
             "course_contents": {"$ref": "#/definitions/cluster"},
             "prerequisites": {"$ref": "#/definitions/cluster"},
             "learning_objectives": {"$ref": "#/definitions/cluster"},
-            "none_types": {"$ref": "#/definitions/cluster"},
+            "unknown": {"$ref": "#/definitions/cluster"},
         },
         "definitions": {
             "cluster": {
