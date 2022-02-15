@@ -15,13 +15,14 @@ class ConvertFutureOfWork(Convert):
 
     def _get_annotations(self, url, gold_annotations, file_name):
         annotations = []
-        for item in gold_annotations:
-            annotations.append({
-                "key": 'test_entity_type',
-                "score": 1,
-                "surfaceForm": item["surface_form"],
-                "start": item["start"],
-                "end": item["end"],
-                "entity_type": file_name.split('.')[0]
-            })
+        for name, items in gold_annotations.items():
+            for item in items:
+                annotations.append({
+                    "key": file_name.split('.')[0],
+                    "score": 1,
+                    "surfaceForm": item["surface_form"],
+                    "start": item["start"],
+                    "end": item["end"],
+                    "entity_type": item["type"]
+                })
         return annotations
