@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 __name__ = "orbis_addon_repoman"
-__version__ = "2.3.0"
+__version__ = "2.4.0"
 __author__ = "fabod, Roger Waldvogel"
 __year__ = "2021"
 __description__ = "The Repoman Addon for Orbis to download and install Corpora and Monocle files."
